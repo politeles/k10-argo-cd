@@ -4,26 +4,6 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
-variable "kubernetes_cluster_id" {
-  type = string
-}
-
-variable "kubernetes_cluster_cert_data" {
-  type = string
-}
-
-variable "kubernetes_cluster_endpoint" {
-  type = string
-}
-
-variable "kubernetes_cluster_name" {
-  type = string
-}
-
-variable "eks_nodegroup_id" {
-  type = string
-}
-
 variable "terraform_remote_state_s3_bucket"{
     type = string
 }
