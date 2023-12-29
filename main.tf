@@ -1,7 +1,7 @@
 provider "kubernetes" {
 
   host                   = var.cluster_endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  cluster_ca_certificate = base64decode(var.cluster_cert_data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name]
@@ -13,7 +13,7 @@ provider "helm" {
   kubernetes {
 
     cluster_ca_certificate = base64decode(var.cluster_cert_data)
-    host                   = data.aws_eks_cluster.cluster.endpoint
+    host                   = var.cluster_endpoint
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
