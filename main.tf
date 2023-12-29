@@ -1,5 +1,6 @@
 data "terraform_remote_state" "eks" {
   backend = "s3"
+  workspace = terraform.workspace
   config = {
     bucket = var.terraform_remote_state_s3_bucket 
     key    = var.terraform_remote_state_s3_bucket_key
