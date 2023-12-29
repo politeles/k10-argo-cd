@@ -1,17 +1,14 @@
-variable "aws_region" {
-  description = "AWS region ID for deployment (e.g. eu-west-1)"
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
   type        = string
-  default     = "eu-west-1"
 }
 
-variable "terraform_remote_state_s3_bucket"{
-    type = string
+variable "cluster_cert_data" {
+  description = "The certificate-authority-data for the EKS cluster"
+  type        = string
 }
 
-variable "terraform_remote_state_s3_bucket_key"{
-    type = string
-}
-
-variable "terraform_remote_state_s3_bucket_region"{
-    type = string
+variable "cluster_endpoint" {
+  description = "The endpoint for the EKS cluster"
+  type        = string
 }

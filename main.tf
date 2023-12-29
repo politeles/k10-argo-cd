@@ -1,26 +1,6 @@
-data "terraform_remote_state" "eks" {
-  backend = "s3"
-  workspace = terraform.workspace
-  config = {
-    bucket = var.terraform_remote_state_s3_bucket 
-    key    = var.terraform_remote_state_s3_bucket_key
-    region = var.terraform_remote_state_s3_bucket_region
-  }
-}
-
-# Retrieve EKS cluster configuration
-data "aws_eks_cluster" "cluster" {
-  name = data.terraform_remote_state.eks.outputs.cluster_name
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = data.terraform_remote_state.eks.outputs.cluster_name
-}
-
-
 provider "kubernetes" {
 
-  host                   = data.aws_eks_cluster.cluster.endpoint
+  host                   = var.cluster_endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
@@ -32,11 +12,11 @@ provider "kubernetes" {
 provider "helm" {
   kubernetes {
 
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+    cluster_ca_certificate = base64decode(var.cluster_cert_data)
     host                   = data.aws_eks_cluster.cluster.endpoint
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.cluster.name]
+      args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
       command     = "aws"
     }
   }
